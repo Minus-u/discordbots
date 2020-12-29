@@ -1,57 +1,32 @@
-const VERSION = "build20202812_0600_gmt7"; // build<date(yyyyddmm)_<time>_<timezone>
+const VERSION = "build20202912_2159_gmt7"; // build<date(yyyyddmm)_<time>_<timezone>
 // Do not change VERSION unless you did made a major change on this code (glitch.com)
 
 // init //
-const dotenv  = require("dotenv"); // for .env
-const fs      = require("fs"); // io file module
+const dotenv = require("dotenv"); // for .env
+const fs = require("fs"); // io file module
 const Discord = require("discord.js"); // Discord API
 const sqlite3 = require("sqlite3"); // Database
 const express = require("express"); // minimalistic express module
+const pug = require("pug"); // minimalistic html template renderer
 
 dotenv.config();
 
 const token = process.env.BOT_TOKEN;
 
 const client = new Discord.Client();
+const expapp = express();
 
 let db = new sqlite3.Database("./chubot.db", err => {
   if (err) {
     return console.error(err.message);
   }
   console.log("Database is ready.");
-}); // No need i think.
-
-/*
-db.close(err => {
-if (err) {
-return console.error(err.message);
-}
-console.log("Database is closed.");
 });
-*/
-
-// handling web static pages
-
-const app = express();
-const port = 8000; // Listen on Port 8000 (public)
-
-app.use(express.static(__dirname + '/public'));
-app.set("views", "./views");
-app.set("view engine", "ejs");
-
-// Navigation
-app.get("", (req, res) => {
-  res.sendFile(__dirname + "/views/index.html");
-});
-
-app.listen(port, () =>
-  console.info(`App is ready, listening on port ${port}.`)
-);
-// host an http server (using express & ejs) to keep the bot alive using UptimeRobot
-// possibly for future use as well
 
 // constant declaration
+const httpport = 8000;
 const prefix = "%";
+const chlimit = 60;
 const coolWords = [
   "<:chufront:789538944819527767>",
   "jaiden",
@@ -98,7 +73,8 @@ const chudesc = [
   "Chris Crungle",
   "ぷよぷよ",
   "こんにちは！お元気ですか？",
-  "いっきまーす!" //arle
+  "いっきまーす!", //arle
+  ":black_square_button: I'm the one who's right!" //squares
 ];
 
 const douitashimashite = [
@@ -115,7 +91,8 @@ const douitashimashite = [
   "OMG MOM GET THE CAMERA %s", // 2009 memes
   "You're Winner! %s",
   "おめでとう🎉%s",
-  "大勝利！%s" // arle
+  "大勝利！%s", // arle
+  ":yellow_circle: Isn't this fun? %s" //marle
 ];
 // STOP BREAKING IT OML
 // TYPE HERE
@@ -143,7 +120,8 @@ const yougotnone = [
   "no shit sherlock",
   "You didn't believe in Santa enough.",
   "さよなら。",
-  "ばたんきゅー。。。" //more arle
+  "ばたんきゅー。。。", //more arle
+  ":black_square_button: This is the right outcome." //squares
 ];
 const activities = [
   "and bullying gareth",
@@ -163,28 +141,26 @@ const activities = [
   "with the slot machine",
   "and listening to chat!",
   "Muse Dash",
+  "Taiko no Tatsujin",
+  "osu!",
   `and listening to commands starting with ${prefix}!` // this is es6 string formatting -> `${variable}
 ];
 
-const animationPhrase = [
-  "┬┴┬┴┤", // 0
-  "┬┴┬┴┤)",
-  "┬┴┬┴┤-･)", // 2
-  "┬┴┬┴┤･-･)",
-  "┬┴┬┴┤･-･)", // 4
-  "┬┴┬┴┤･o･)",
-  "┬┴┬┴┤･ω･)!", // 6
-  "┬┴┬┴┤･ω･)ﾉi!",
-  "┬┴┬┴┤･ω･)ﾉHi!", // 8
-  "┬┴┬┴┤･ω･)ﾉ Hi!",
-  "┬┴┬┴┤･ω･)ﾉ  Hi!", // 10s
-  "┬┴┬┴┤･ω･)ﾉ   Hi!",
-  "┬┴┬┴┤ω･)ﾉ     Hi!", // 12
-  "┬┴┬┴┤･)ﾉ       Hi!",
-  "┬┴┬┴┤)ﾉ         Hi", // 14
-  "┬┴┬┴┤ﾉ           H",
-  "┬┴┬┴┤" // 16 length
-];
+expapp.use(express.static(__dirname + "/public"));
+expapp.set("views", "./views");
+expapp.set("view engine", "ejs");
+
+// Navigation
+expapp.get("/", function(req, res) {
+  res.render("index.pug", { prefix: prefix, maxAmounts: chlimit, VERSION: VERSION });;});
+
+expapp.get("/animlist", function(req, res) {
+  res.render("animlist.pug", { animlist: fs.readdirSync("./animations/") });
+});
+
+expapp.listen(httpport, (s) =>
+  console.info(`App is ready, listening on port ${httpport}.`)
+);
 
 //Sets the bot online
 client.login(token);
@@ -209,11 +185,15 @@ client.on("message", message => {
   if (message.author.bot) {
     return;
   }
+  
+  if (message.content.startsWith(`${prefix}chuinfo`)) message.channel.send(`NodeJS ${process.version}\nLastest build: ${VERSION}`);
 
-  if (message.content.startsWith(`${prefix}help`)) message.channel.send("https://NculVHLNnOrC7gOQaHSA.minusu1.repl.co/");
+  if (message.content.startsWith(`${prefix}help`))
+    message.channel.send("https://NculVHLNnOrC7gOQaHSA.minusu1.repl.co/");
 
   // If the Gareth counter didn't exist already in this user, create it
-  if (typeof message.author.gareth === "undefined") message.author.gareth = false;
+  if (typeof message.author.gareth === "undefined")
+    message.author.gareth = false;
 
   if (
     message.content.toLowerCase().includes("gareth") &&
@@ -236,7 +216,8 @@ client.on("message", message => {
         let embed = new Discord.MessageEmbed() // sends embed message
           .setTitle("secret gareth message")
           .setDescription("gareth loves chu puyo!!!!")
-          //.setImage({files:['./assets/gareth apple.jpg']})
+          .attachFiles(["./assets/gareth apple.jpg"])
+          .setImage("attachment://gareth apple.jpg")
           // wtf where is the thing
           // wtfwtf illuminati???
           .setColor("RANDOM");
@@ -348,58 +329,46 @@ client.on("message", message => {
   if (message.content.startsWith(`${prefix}sendchu`)) {
     var param = message.content.split(" ");
     var amount = param[2];
-    const user = (param[3] != "anon") ? message.author : "An anonymous person";
-    const chlimit = 60;
+    const user = param[3] != "anon" ? message.author : "An anonymous person";
     //let target = message.mentions.members.first(); // not working
     const mentioned = getUserFromMention(message.content.split(" ")[1]);
-    if (mentioned === null || !mentioned) message.channel.send(`Usage: \`${prefix}sendchu <@username> [amount 1-${chlimit}]\``);
-    else if (mentioned.bot === true) message.channel.send("Can't send Chu Puyo to a machine. I don't think it's going to see the Chu you sent...");
+    if (mentioned === null || !mentioned)
+      message.channel.send(
+        `Usage: \`${prefix}sendchu <@username> [amount 1-${chlimit}]\``
+      );
+    else if (mentioned.bot === true)
+      message.channel.send(
+        "Can't send Chu Puyo to a machine. I don't think it's going to see the Chu you sent..."
+      );
     else {
       if (!amount) amount = 1; // default at 1 Chu worth.
-      if (amount < 1 || amount > chlimit) message.channel.send(`⚠️ Cannot send zero or more than ${chlimit} chu for now! (Discord character limit)`);
+      if (amount < 1 || amount > chlimit)
+        message.channel.send(
+          `⚠️ Cannot send zero or more than ${chlimit} chu for now! (Discord character limit)`
+        );
       else {
         var dmchu = "";
-        for (var i = 0; i < amount; i++) dmchu += ChuPuyo[Math.floor(Math.random() * ChuPuyo.length)];
+        for (var i = 0; i < amount; i++)
+          dmchu += ChuPuyo[Math.floor(Math.random() * ChuPuyo.length)];
         try {
           if (param[3] == "anon") message.delete();
+          message.channel.send(`${amount} Chu Puyo have been successfully sent!`).then(msg => {
+            msg.delete({ timeout: 3500 })
+          }).catch(console.error);
           mentioned.send(`${user} sent you ${amount} Chu Puyo!`);
           mentioned.send(dmchu);
           mentioned.send("Happy Chu Puyo!!");
-        } catch (err) {
-          console.error(err);
-        }
+        } catch (err) {console.error(err)}
       }
     }
   }
-  
+
   // do you own a cat, or does the cat own you?
   if (message.content.startsWith(`${prefix}ownacat`)) {
     message.delete();
-    message.channel.send({
-      files: ["./assets/video0.mp4"]
-    });
+    message.channel.send({files: ["./assets/video0.mp4"]});
   }
-  
-  // Greetings from behind animation
-  if (message.content.startsWith(`${prefix}sayhi`)) {
-    try {
-      // ┬┴┬┴┤･ω･)ﾉ animate this
-      message.delete();
-      message.channel.send("*knock knock*").then(function(msg) {
-        var phrase = 0;
-        var animation = setInterval(function() {
-          if (phrase != animationPhrase.length) {
-            msg.edit(animationPhrase[phrase]);
-            phrase++;
-          } else {
-            clearInterval(animation);
-            msg.delete(); // delete after finish
-          }
-        }, 1500);
-      });
-    } catch (err) {console.error(err);}
-  } // line 420!!!! funny weed number!! YOO
-  
+
   //shuts up who ever the hell asked in the most polite way possible
   if (message.content.includes("who") && message.content.includes("asked")) {
     if (Math.floor(Math.random() * 15) < 8) {
@@ -407,7 +376,32 @@ client.on("message", message => {
     }
   }
   
-// add new command/events above this comment //
+  // play animation
+  if (message.content.startsWith(`${prefix}animate`)) {
+    try {
+      const param = message.content.split(" ");
+      const files = fs.readdirSync("./animations/");
+      let anim = files.indexOf(param[1]) > -1 ? param[1] : files[Math.floor(Math.random() * files.length)];
+      var content = fs.readFileSync(`animations/${anim}`, 'utf-8').split("\n");
+      message.channel.send(`Loading ${anim}...`).then(function(msg) {
+        var phrase = 0;
+        var animation = setInterval(function() {
+          if (phrase != content.length) {
+            msg.edit(content[phrase]);
+            phrase++;
+          } else {
+            clearInterval(animation);
+            msg.delete(); // delete after finish
+            message.delete();
+          }
+        }, 1250);
+      });
+    } catch (err) {
+      message.channel.send(err);
+    }
+  }
+
+  // add new command/events above this comment //
 }); // end of client statement
 
 // Taken from https://stackoverflow.com/questions/840781/get-all-non-unique-values-i-e-duplicate-more-than-one-occurrence-in-an-array
