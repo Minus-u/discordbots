@@ -1,4 +1,5 @@
 *.env
 *.glitch-*
 *.db
-package-*
+package-lock.json
+*_old

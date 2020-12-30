@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    title Chu Bot Helper
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" type="text/css" href="css/style.css")
+  body
+    h2 All Chu Bot available commands
+    p All commands starts with the !{prefix} prefix.
+    p Example: 
+      pre !{prefix}sendchu @exampleuser 35 anon
+    hr
+    h3 Direct commands
+    div(class="background")
+      p Those commands does not require any parameter passed.
+      hr
+      pre slot
+      p Start a slot machine of Chu Puyo.
+      hr
+      pre ownacat
+      p Do you own a cat? Or does the cat own you?
+    hr
+    h3 Customizable commands
+    div(class="background")
+      p Those commands may need parameters to be passed. {Required Parameter} and [Optional parameter].
+      hr
+      pre sendchu <@username> [1-!{maxAmounts}] [anon]
+      p Send Chu Puyo to someone.
+      p Example:
+        pre !{prefix}sendchu @exampleuser 35 anon
+      hr
+      pre animate [animation_name]
+      p Play animation defined in the 
+        a(href="/animlist") animations list
+    hr
+    span Bot hosted and maintained by 
+      a(href="https://twitter.com/1minusu") @minus
+    br
+    span Contributor: 
+      a(href="https://twitter.com/kikasurupizza") @Kikasuru</a>, 
+      a(href="https://twitter.com/soraboken") @soraboken
+    br
+    span Webpage built by 
+      a(href="https://twitter.com/soraboken") @soraboken
+    p Last build: !{VERSION}

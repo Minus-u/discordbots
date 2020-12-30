@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    title Animation List
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" type="text/css" href="css/style.css")
+  body
+    h2 Animation List
+    div(class="background")
+      each v in animlist
+        span=v
+        br
+    span Usage: 
+    pre animate [animation_name]
+    a(href="/") <- Go back
