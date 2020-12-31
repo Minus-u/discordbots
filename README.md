@@ -1,2 +1,5 @@
-# Something-Discord Bot
-Discord bot made with a slot machine built in, as well as the power to ruin someone's life
+# Chu Puyo Discord Bot
+Discord bot made for Chris Crungle's Discord Server.
+
+# Can I test this on your server?
+Unfortunately, no, but you can clone this and run it by yourself.

@@ -1,0 +1,8 @@
+// template for commands and events
+module.exports = {
+  name: "",
+  description: "",
+  args: false,
+  execute(message, args) {
+  }
+};
