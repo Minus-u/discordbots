@@ -12,10 +12,10 @@ html
     hr
     h3 Direct commands
     div(class="background")
-      p Those commands does not require any parameter passed.
+      p Those commands does not require any parameter passed
       hr
       pre slot
-      p Start a slot machine of Chu Puyo.
+      p Start a slot machine of Chu Puyo
       hr
       pre ownacat
       p Do you own a cat? Or does the cat own you?
@@ -25,13 +25,17 @@ html
       p Those commands may need parameters to be passed. {Required Parameter} and [Optional parameter].
       hr
       pre sendchu <@username> [1-!{maxAmounts}] [anon]
-      p Send Chu Puyo to someone.
+      p Send Chu Puyo to someone
       p Example:
         pre !{prefix}sendchu @exampleuser 35 anon
       hr
       pre animate [animation_name]
       p Play animation defined in the 
         a(href="/animlist") animations list
+      hr
+      pre p5cc <message_string>
+      p Make a Persona 5 Themed Calling Card using 
+        a(href="https://skyventuree.github.io/tools/p5cc/index.html") soraboken's P5CC API
     hr
     span Bot hosted and maintained by 
       a(href="https://twitter.com/1minusu") @minus
@@ -42,4 +46,7 @@ html
     br
     span Webpage built by 
       a(href="https://twitter.com/soraboken") @soraboken
+    br
+    span Want some Puyo Quest bot? Try out 
+      a(href="https://github.com/puyogg/puyoquest-bot") Yotarou Bot! </a> :)
     p Last build: !{VERSION}
