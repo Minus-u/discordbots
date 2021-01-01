@@ -3,7 +3,7 @@ const { ChuEmote, EmoteLimit } = require("../const_mod.js");
 module.exports = {
   name: "sendchu",
   args: true,
-  usage: "<user> <amount>",
+  usage: "<user> <amount> [anon]",
   description: "Send Chu Puyo as a gift.",
   aliases: ["schu", "sc"],
   execute(message, args) {

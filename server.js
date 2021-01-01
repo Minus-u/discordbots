@@ -133,18 +133,15 @@ client.on("message", message => {
       client.commands.find(
         cmd => cmd.aliases && cmd.aliases.includes(cmdInput)
       );
+
     try {
       if (command.args === true && !args.length)
         return message.channel.send(
           `Usage: \`${prefix}${command.name} ${command.usage}\``
         );
-    } catch (err) {
-      console.error(err); // obviously handling for no reason
-    }
-    try {
       command.execute(message, args);
     } catch (err) {
-      console.error(err);
+      console.error(err); // obviously handling for no reason
     }
   }
 
@@ -156,17 +153,20 @@ client.on("message", message => {
       .split(/ +/); // array object
     try {
       for (var i = 0; i < content.length; i++) {
-        const event = client.events.find(
-          evn => evn.keyword && evn.keyword.includes(content[i])
-          
+        const event = client.events.filter(
+          evn =>
+            (evn.keyword && evn.keyword.includes(content[i])) ||
+            (evn.requireUser && evn.requireUser.includes(message.author.id))
         );
-        if (typeof event === "object") {
-          event.execute(message);
-          break; 
+        if (typeof event == "object") {
+          event.forEach((value, key, map) => {
+            value.execute(message);
+          });
+          break;
         }
       }
     } catch (err) {
-      //console.log(err);
+      console.log(err);
     }
   }
 });

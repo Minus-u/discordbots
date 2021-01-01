@@ -3,7 +3,7 @@ const { gDetect } = require("../const_mod.js");
 
 module.exports = {
   name: "garethCorrector",
-  description: "Dectect Jaiden/Gareth to roast.",
+  description: "Detect if people say Jaiden then correct them.",
   keyword: gDetect,
   execute(message) {
     for (var i = 0; i < gDetect.length; i++) {
@@ -14,7 +14,7 @@ module.exports = {
           message.channel.send("<:chudrip:789157545000173608>");
           let embed = new Discord.MessageEmbed() // sends embed message
             .setTitle("secret gareth message")
-            .attachFiles(["../assets/gareth apple.jpg"])
+            .attachFiles(["./assets/gareth apple.jpg"])
             .setImage("attachment://gareth apple.jpg")
             .setDescription("gareth loves chu puyo!!!!")
             .setColor("RANDOM");
