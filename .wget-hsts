@@ -1,0 +1,5 @@
+# HSTS 1.0 Known Hosts database for GNU Wget.
+# Edit at your own risk.
+# <hostname>[:<port>]	<incl. subdomains>	<created>	<max-age>
+www.icloud.com	0	1	1609639892	31536000
+share.icloud.com	0	1	1609639892	31536000

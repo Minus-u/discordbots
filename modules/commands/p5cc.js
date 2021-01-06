@@ -9,12 +9,34 @@ module.exports = {
   description: "Persona 5 Calling Card Maker",
   args: true,
   usage: "<message>",
-  execute(message, args) {
-    let msg = message.content.split(/ +/);
+  execute: async function(message, args) {
+    let msg = message.content
+      .replace(
+        /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, //wtf lol
+        ""
+        // every single emoji will be out of the game (regex special unicode characters)
+        // references: http://inamidst.com/stuff/unidata/
+      )
+      .split(/ +/);
     msg.shift();
+
+    for (var i = 0; i < msg.length; i++) {
+      // replace all user id with their corresponding name
+      if (msg[i].match(/<@.?(!)\d{1,}>|<.?([0-9])\d{1,}>/)) {
+        let id = msg[i].match(/\d+/g)[0];
+        const user = message.client.users.cache.get(id);
+        if (!user) msg[i] = "deleted_user";
+        msg[i] = user.username;
+      }
+    }
     msg = msg.join(" ");
+
     if (msg.length <= 1)
-      return message.channel.send("Message too short to send.");
+      // whitespace striped, preventing ws input
+      return await message.channel.send(
+        "Message too short to send. (Below 1 character.)"
+      );
+
     let form = new FormData();
     form.append("message", msg);
     try {
@@ -28,7 +50,7 @@ module.exports = {
       form.pipe(request);
 
       request
-        .on("response", function(res) {
+        .on("response", res => {
           let data = "";
           res.on("data", chunk => {
             data += chunk;
@@ -38,9 +60,9 @@ module.exports = {
             let request = http.get(data, response => {
               response.pipe(file);
             });
-            download(data, filePath, function(err) {
-              if (err) console.log(err);
-              message.channel.send({ files: [filePath] });
+            download(data, filePath, async function(err) {
+              if (err) return console.log(err);
+              await message.channel.send({ files: [filePath] });
             });
           });
         })
@@ -53,7 +75,7 @@ module.exports = {
 };
 
 // from https://stackoverflow.com/questions/11944932/how-to-download-a-file-with-node-js-without-using-third-party-libraries#22907134
-let download = function(url, dest, cb) {
+const download = (url, dest, cb) => {
   var file = fs.createWriteStream(dest);
   var request = http
     .get(url, function(response) {

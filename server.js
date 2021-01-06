@@ -1,11 +1,12 @@
-// Installed Modules //
+console.log("Please wait...");
+// init //
 const dotenv = require("dotenv"); // for .env
 const fs = require("fs"); // io file module
 const Discord = require("discord.js"); // Discord API
-// const sqlite3 = require("sqlite3"); // Database
 const express = require("express"); // minimalistic express module
 const pug = require("pug"); // minimalistic html template renderer
-// const os = require("os"); // os i/o module
+
+console.log("Library imported. Initializing Chu Bot...");
 
 dotenv.config();
 
@@ -17,24 +18,36 @@ const expapp = express();
 
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
+client.queue = new Map();
+
+client.config = {
+  prefix: "%"
+};
 
 // import then handling the commands
-const commandModule = fs
-  .readdirSync("./modules/commands")
-  .filter(fsCommand => fsCommand.endsWith(".js"));
-for (const fsCommand of commandModule) {
-  const command = require(`./modules/commands/${fsCommand}`);
-  client.commands.set(command.name, command);
-}
+fs.readdir("./modules/commands/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    if (!file.endsWith(".js")) return;
+    const command = require(`./modules/commands/${file}`);
+    client.commands.set(command.name, command);
+    console.log(`[Commands] load ${file} > ${command.name}`);
+  });
+});
 
 // import then handling the events
-const eventModule = fs
-  .readdirSync("./modules/events")
-  .filter(fsEvent => fsEvent.endsWith(".js"));
-for (const fsEvent of eventModule) {
-  const events = require(`./modules/events/${fsEvent}`);
-  client.events.set(events.name, events);
-}
+fs.readdir("./modules/events/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    if (!file.endsWith(".js")) return;
+    const events = require(`./modules/events/${file}`);
+    client.events.set(events.name, events);
+    console.log(
+      `[Events] load ${file} > ${events.name} > ${events.keyword ||
+        events.requireUser}`
+    );
+  });
+});
 
 // const_mod.js deconstruction
 const {
@@ -50,8 +63,8 @@ expapp.use(express.static(__dirname + "/public"));
 expapp.set("views", "./views");
 expapp.set("view engine", "ejs");
 
-// Navigation
-expapp.get("/", function(req, res) {
+// main page
+expapp.get("/", (req, res) => {
   res.render("index.pug", {
     prefix: prefix,
     maxAmounts: EmoteLimit,
@@ -59,12 +72,13 @@ expapp.get("/", function(req, res) {
   });
 });
 
-expapp.get("/animlist", function(req, res) {
+// animation list pages
+expapp.get("/animlist", (req, res) => {
   res.render("animlist.pug", { animlist: fs.readdirSync("./animations/") });
 });
 
 expapp.listen(8000, s =>
-  console.info("Express App is ready to serve over HTTP(S).")
+  console.info("[Express] Help and bot manual is ready.")
 );
 
 //Sets the bot online
@@ -73,19 +87,19 @@ client.login(token);
 client.on("ready", () => {
   client.user.setPresence({
     activity: {
-      name: `Chu Puyo is listening. Last successful build: ${VERSION}`
-    }, //init playing status
+      name: `Chu Puyo is listening. Last successful update: ${VERSION}`
+    },
     status: "online"
-  }); //sets status of the bot and game playing
+  });
   setInterval(() => {
     client.user.setActivity(
       BotPresence[Math.floor(Math.random() * BotPresence.length)]
-    ); // sets bot's activities to one of the phrases in the arraylist.
+    );
   }, 169420);
-  console.log("Chu Puyo the absolute banger bot is now ready!"); //tells when the bot is ready to use
+  console.log("[Discord] Chu Bot is ready. Lastest " + VERSION);
 });
 
-client.on("message", message => {
+client.on("message", async message => {
   // Skip if this user is a bot
   if (message.author.bot) return;
 
@@ -93,15 +107,15 @@ client.on("message", message => {
   if (typeof message.author.gareth === "undefined")
     message.author.gareth = false;
 
-  // update build version /////////////////
-  if (message.content.startsWith("!%buildDate:update")) {
+  // update build version ////////////////////////
+  if (message.content.startsWith("!%buildDate")) {
     message.delete();
     const date = new Date();
     message.channel
       .send(
-        "This will update the build date. Please make sure the bot is well tested before updating.\nReact ✅ to update, or wait to cancel."
+        "This will update the version name. Please make sure the bot is well tested before updating.\nReact ✅ to update, or wait to cancel."
       )
-      .then(function(msg) {
+      .then(async msg => {
         msg.react("✅");
         const filter = reaction => {
           return reaction.emoji.name === "✅";
@@ -111,15 +125,16 @@ client.on("message", message => {
           msg.reactions.removeAll();
           if (collected.size < 1) msg.edit("Update cancelled.");
           else {
-            msg.edit("Please wait...");
-            fs.writeFile(".version", date.toISOString(), function(err) {
-              if (err) message.channel.send("```" + err + "```");
+            fs.writeFile(".version", date.toISOString(), err => {
+              if (err) message.channel.send("```" + err.toString() + "```");
             });
-            msg.edit("Task completed.");
+            msg.edit("Version name updated to " + date.toISOString());
+            console.log("[Discord] Version name updated: " + date.toISOString());
           }
         });
       });
   }
+  ///// for updating build version /////////////////
 
   // input is a command
   if (message.content.startsWith(prefix)) {
@@ -139,18 +154,19 @@ client.on("message", message => {
         return message.channel.send(
           `Usage: \`${prefix}${command.name} ${command.usage}\``
         );
-      command.execute(message, args);
+      await command.execute(message, args);
     } catch (err) {
       console.error(err); // obviously handling for no reason
     }
   }
 
-  // input is a normal message -> check if conditions satisfied
+  // input is a normal message
   else {
     const content = message.content
       .trim()
       .toLowerCase()
-      .split(/ +/); // array object
+      .split(/ +/);
+
     try {
       for (var i = 0; i < content.length; i++) {
         const event = client.events.filter(
@@ -159,8 +175,8 @@ client.on("message", message => {
             (evn.requireUser && evn.requireUser.includes(message.author.id))
         );
         if (typeof event == "object") {
-          event.forEach((value, key, map) => {
-            value.execute(message);
+          event.forEach(async (value, key, map) => {
+            await value.execute(message);
           });
           break;
         }
