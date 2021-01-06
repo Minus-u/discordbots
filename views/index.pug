@@ -1,42 +1,136 @@
 doctype html
 html
   head
-    title Chu Bot Helper
+    title Chu Bot Manual Page
     meta(name="viewport" content="width=device-width, initial-scale=1")
     link(rel="stylesheet" type="text/css" href="css/style.css")
   body
-    h2 All Chu Bot available commands
-    p All commands starts with the !{prefix} prefix.
-    p Example: 
-      pre !{prefix}sendchu @exampleuser 35 anon
+    h2 Chu Bot Manual Page
+    p(id="cen") version 3
     hr
-    h3 Direct commands
+    
+    h3(style="text-align:center") First thing first,
     div(class="background")
-      p Those commands does not require any parameter passed
-      hr
-      pre slot
-      p Start a slot machine of Chu Puyo
-      hr
-      pre ownacat
-      p Do you own a cat? Or does the cat own you?
+      p This manual may not contains every commands that exist in the bot,if you may happen to run a command that is not provided in this manual page,please do not expect the command to run normally.
+      p This manual is hand-written to ensure everything is correct.
     hr
-    h3 Customizable commands
-    div(class="background")
-      p Those commands may need parameters to be passed. {Required Parameter} and [Optional parameter].
-      hr
-      pre sendchu <@username> [1-!{maxAmounts}] [anon]
-      p Send Chu Puyo to someone
-      p Example:
-        pre !{prefix}sendchu @exampleuser 35 anon
-      hr
-      pre animate [animation_name]
-      p Play animation defined in the 
-        a(href="/animlist") animations list
-      hr
-      pre p5cc <message_string>
-      p Make a Persona 5 Themed Calling Card using 
-        a(href="https://skyventuree.github.io/tools/p5cc/index.html") soraboken's P5CC API
+    
+    h2 Commands
+    p(id="cen") List of commands you can run on Chu Bot. Right now, the prefix of Chu Bot is !{prefix}.
+    p(id="cen") Commands that marked with a (*) requires argument(s) needed to be processed. (Read "argument(s)" on what to pass.)
+    h3 Fun commands
+    div(style="overflow:scroll")
+      div(style="width:1200px")
+        table
+          tr
+            th Command
+            th Argument(s)
+            th Description
+          tr
+            td animate
+            td
+              code #animation_name
+            td Play animation name defined in the 
+              a(href="/animlist") animation list
+              span . Play random animation if no argument specified
+          tr
+            td chufact
+            td
+            td Get a random Chu Puyo Fact
+          tr
+            td chuinfo
+            td
+            td Get info about Chu Bot
+          tr
+            td help
+            td
+            td Get link to this help page
+          tr
+            td ownacat
+            td
+            td Do you own a cat, or does the cat owns you?
+          tr
+            td (*) p5cc
+            td 
+              code #*message
+            td Make a Persona 5 Themed Calling card using 
+              a(href="https://skyventuree.github.io/tools/p5cc") soraboken's P5CC API
+          tr
+            td (*) sendchu
+            td 
+              code #*@username #amount(1-60) anon
+            td Send Chu Puyo to someone. Pass "anon" if you want to send Chu anonymously.
+          tr
+            td slot
+            td
+            td Play Chu Puyo Slot Machine.
+          tr
+            td xkcd
+            td 
+              code lastest|random|#id
+            td Retrive lastest/random or a specific comic number from xkcd
+            
+    h3 Category: Music 
+      span (Required to be in voice chat)
+    div(style="overflow:auto")
+      div
+        table
+          tr
+            th Command
+            th Argument(s)
+            th Description
+          tr
+            td (*) play
+            td
+              code #*youtube_url
+            td Play a video from YouTube URL
+          tr
+            td nowplaying
+            td
+            td Show what is being played right now
+          tr
+            td pause
+            td
+            td Pause the player
+          tr
+            td (*) playlist
+            td 
+              code #*youtube_url
+            td Add playlist to the player queue
+          tr
+            td queue
+            td
+            td Show the queue in player
+          tr
+            td (*) remove
+            td
+              code #*index
+            td Remove a song from queue
+          tr
+            td resume
+            td
+            td Resume the player
+          tr
+            td (*) search
+            td
+              code #*query
+            td Search for a YouTube video
+          tr
+            td skip
+            td
+            td Skip the current song
+          tr
+            td stop
+            td
+            td Stop the player and clear the player
+
+            
     hr
+    
+    h2 Credit
+    a(href="https://github.com/SudhanPlayz/Discord-MusicBot") Discord-MusicBot 
+    span by Sudhan.
+    br
     span Bot hosted and maintained by 
       a(href="https://twitter.com/1minusu") @minus
     br
@@ -49,4 +143,4 @@ html
     br
     span Want some Puyo Quest bot? Try out 
       a(href="https://github.com/puyogg/puyoquest-bot") Yotarou Bot! </a> :)
-    p Last build: !{VERSION}
+    p Last update: !{VERSION}

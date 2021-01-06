@@ -6,7 +6,7 @@ module.exports = {
   usage: "<user> <amount> [anon]",
   description: "Send Chu Puyo as a gift.",
   aliases: ["schu", "sc"],
-  execute(message, args) {
+  execute: async function (message, args) {
     var amount = args[2];
     const user = args[3] != "anon" ? message.author : "An anonymous person";
     const mentioned = getUserFromMention(message, args[1]);

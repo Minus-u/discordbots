@@ -6,7 +6,7 @@ module.exports = {
   args: false,
   execute(message, args) {
     message.channel.send(
-      `NodeJS ${process.version}\nLastest build: ${fs.readFileSync(
+      `NodeJS ${process.version}\nLastest update: ${fs.readFileSync(
         ".version"
       )}\nUptime: ${process.uptime()}s`
     );

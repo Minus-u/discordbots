@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>/tmp/files - Temporary File Hosting</title>
+  <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- JAVASCRIPT BELOW -->
+  <script src="//code.jquery.com/jquery-latest.js"></script>
+  <script src="/assets/javascript/fineuploader-3.2.min.js"></script>
+  <!-- STYLE BELOW -->
+  <link href="/assets/stylesheet/style.css" media="all" rel="stylesheet" type="text/css" />
+  <link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css' />
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-66112161-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-66112161-2');
+  </script>
+</head>
+<body>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  <div id="container">
+    <header>
+      <h1><a href="/">/tmp/files</a> BETA</h1>
+      <h2>Temporary File Hosting</h2>
+    </header>
+    <section>
+          <form action="/contact/send" method="post">
+            <p><label>Subject</label><br><input type="text" name="in_subject" required></p>
+            <p><label>Your e-mail</label><br><input type="email" name="in_email" required></p>
+            <p><label>Message</label><br><textarea name="in_message" required></textarea></p>
+            <p><input type="submit" value="Send!" /></p>
+          </form>
+
+    </section>
+    <footer>
+      <ul>
+        <li><a href="/">Upload</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+
+      <div style="text-align: center; width: 170px;" class="fb-like" data-href="https://www.facebook.com/pages/tmpfilesorg/745624905565400" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+    </footer>
+  </div>
+</body>
+</html>

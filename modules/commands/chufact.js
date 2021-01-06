@@ -1,5 +1,5 @@
 //spit some chufacts
-const { chuFacts } = require("../const_mod");
+const { ChuFacts } = require("../const_mod");
 
 module.exports = {
   name: "chufact",
@@ -8,6 +8,6 @@ module.exports = {
   aliases: ["cfact", "cf"],
   execute(message, args) {
     message.delete();
-    message.channel.send(chuFacts[Math.floor(Math.random() * chuFacts.length)]);
+    message.channel.send(ChuFacts[Math.floor(Math.random() * ChuFacts.length)]);
   }
 };

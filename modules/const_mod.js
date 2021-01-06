@@ -4,11 +4,14 @@ const prefix = "%";
 module.exports = {
   prefix: prefix,
   EmoteLimit: 60,
+  
+  // detect keywords of jaiden
   gDetect: [
-    "<:chufront:789538944819527767>",
     "jaiden",
     "340190817035616267"
-  ], //the words that will trigger the bot to ruin jaiden's life
+  ], 
+  
+  // every chu emote on chris crungle's server
   ChuEmote: [
     "<:yon:789399503346204732>",
     "<:tsu:789045612791332864>",
@@ -23,9 +26,10 @@ module.exports = {
     "<:chudrip:789157545000173608>",
     "<:chu:788653775799189505>",
     "<:aqua:790343688685092864>"
-  ], //lots of chu puyo emotes
-
-  ChuSlotDescription: [
+  ], 
+  
+  // description for chu bot game
+  ChuBotDescription: [
     "chuchuchuchuchuchuchuchuchu",
     "In Soviet Russia, Chu Puyo picks you!",
     "btw witch best girl 👀",
@@ -38,9 +42,9 @@ module.exports = {
     "gayreth",
     "gareth stan only zone",
     "i have gained sentience",
-    "zkekfjfjofkekrigigktkrjr", //LMAO best line ever
+    "zkekfjfjofkekrigigktkrjr", 
     "Now Playing: Puyo Puyo Fever - Oh no! (Defeat)",
-    "WHO POSTED MY NUDES ON TWITTER DOT COM???", //LMAOOOO i fucked your wife BRUHHHH WHYYYYY
+    "WHO POSTED MY NUDES ON TWITTER DOT COM???",
     "Wazzup?!",
     "lemres perfume",
     "witch puyo puyo brainrot",
@@ -50,10 +54,11 @@ module.exports = {
     "Chris Crungle",
     "ぷよぷよ",
     "こんにちは！お元気ですか？",
-    "いっきまーす!", //arle
-    ":black_square_button: I'm the one who's right!" //squares
+    "いっきまーす!", //arle's line
+    ":black_square_button: I'm the one who's right!"
   ],
-
+  
+  // win lines for chuslot (EXCLUSIVE TO CHU SLOT ONLY.)
   ChuSlotWin: [
     "You got %s as your friend!!!",
     "May %s be with you forever.",
@@ -71,10 +76,8 @@ module.exports = {
     "大勝利！%s", // arle
     ":yellow_circle: Isn't this fun? %s" //marle
   ],
-  // STOP BREAKING IT OML
-  // TYPE HERE
-  // SMH
-  //well then i think its pretty epic
+  
+  // lose lines for chu bot game
   ChuSlotLose: [
     "It's fine :) You can try again.", // bot being nice :)
     "Maybe your fate has decided to be unlucky.",
@@ -99,6 +102,8 @@ module.exports = {
     "ばたんきゅー。。。", //more arle
     ":black_square_button: This is the right outcome." //squares
   ],
+  
+  // random line for presence
   BotPresence: [
     "and bullying gareth",
     "then sending chu puyo",
@@ -121,7 +126,9 @@ module.exports = {
     "osu!",
     `and listening to commands starting with ${prefix}!` // this is es6 string formatting -> `${variable}
   ],
-  chuFacts: [
+  
+  // chu facts
+  ChuFacts: [
     "Chu loves you!", 
     "Carbuncle can shoot beams from the red gem on his forehead.",
     "The Thinking of Chu item sends three lines of Chu Puyo to the opponent at the start of the match, and slows their movement down.",
@@ -142,5 +149,15 @@ module.exports = {
     "Chu Puyo only appear in Puyo Puyo Fever 2, and they function essentially the same as regular garbage puyo.",
     "Witch's birthday is on October 31.",
     "Draco's AI does not allow her to rotate her puyo, even when using Core AI."
+  ],
+  
+  // card suits for chublackjack
+  CardSuits: [
+    ":spades:",
+    ":heart:",
+    ":diamonds:",
+    ":clubs:"
   ]
 };
+
+
