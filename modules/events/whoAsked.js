@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
   name: "whoAsked",
   description: 'Chance to shut someone up if they say "who asked."',
-  keyword: ["who", "asked"],
+  keyword: ["who asked"],
   execute(message) {
     //shuts up who ever the hell asked in the most polite way possible
     if (Math.floor(Math.random() * 15) < 8)
