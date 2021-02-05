@@ -4,7 +4,7 @@ module.exports = {
   name: "garethDetector",
   description:
     "Checks if the message is Gareth, if so, there is a chance to shut him up.",
-  requireUser: ["340190817035616267"],
+  requireUser: ["1"], // module disabled
   execute(message) {
     const random = Math.floor(Math.random() * 16);
     if ([3, 6, 9, 15].includes(random)) {
